@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Bionorte Brasil — Catálogo Digital</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { background: #f0f4f8; padding: 30px; max-width: 1000px; margin: 0 auto; }
+    h1 { color: #0c4a6e; text-align: center; margin-bottom: 30px; }
+    .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 25px; }
+    h2 { color: #0369a1; margin-bottom: 15px; font-size: 18px; }
+    button { background: #0284c7; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-right: 10px; }
+    button:hover { background: #0369a1; }
+    input { padding: 10px; width: 280px; border: 2px solid #bae6fd; border-radius: 6px; margin-right: 10px; font-size: 15px; }
+    .resultado { margin-top: 18px; padding: 15px; background: #f0f9ff; border-radius: 8px; font-family: monospace; font-size: 13px; white-space: pre-wrap; max-height: 400px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h1>🔬 Bionorte Brasil — Catálogo Digital</h1>
+
+  <div class="card">
+    <h2>✅ Endpoint 1: Resumo por Categoria</h2>
+    <button onclick="carregarResumo()">Carregar Resumo</button>
+    <div id="resumo" class="resultado"></div>
+  </div>
+
+  <div class="card">
+    <h2>✅ Endpoint 2: Busca de Produtos</h2>
+    <input type="text" id="campoBusca" placeholder="Ex: VIDA, BIO, Coagulação...">
+    <button onclick="buscarProdutos()">Buscar</button>
+    <div id="buscaResultado" class="resultado"></div>
+  </div>
+
+  <script>
+    async function carregarResumo() {
+      const res = await fetch('/api/extras/resumo-categorias');
+      const dados = await res.json();
+      document.getElementById('resumo').textContent = JSON.stringify(dados, null, 2);
+    }
+    async function buscarProdutos() {
+      const termo = document.getElementById('campoBusca').value;
+      const res = await fetch(`/api/extras/buscar?q=${encodeURIComponent(termo)}`);
+      const dados = await res.json();
+      document.getElementById('buscaResultado').textContent = JSON.stringify(dados, null, 2);
+    }
+  </script>
+</body>
+</html>
